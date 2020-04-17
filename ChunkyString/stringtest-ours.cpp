@@ -13,12 +13,12 @@
 
 // These two lines are for homework 7. Comment out or delete
 // for homeworks 8 & 9
-#include <cs70/stringwrapper.hpp>
-using TestingString = GenericString;
+//#include <cs70/stringwrapper.hpp>
+//using TestingString = GenericString;
 
 // These two lines are for homeworks 8 & 9. Comment out for homework 7.
-// #include "chunkystring.hpp"
-// using TestingString = ChunkyString;
+#include "chunkystring.hpp"
+using TestingString = ChunkyString;
 
 /**
  * Assuming chunks are supposed to be at least an average of
@@ -377,6 +377,466 @@ bool plusEqualsTest() {
   return log.summarize();
 }
 
+////////////////////////
+/// Kyra's Tests
+///////////////////////
+
+/////////////////////////////////////
+//// Iterator Member function Tests
+////////////////////////////////////
+
+// equalityTest() for Iterators
+bool equalityTest2() {
+  // Set up the TestingLogger object
+  TestingLogger log("Equality and Inequality test");
+
+  TestingString s;
+  s.push_back('a');
+  s.push_back('b');
+  s.push_back('c');
+  s.push_back('d');
+  s.push_back('e');
+
+  TestingString::iterator iterator1 = s.begin();
+
+  for (TestingString::iterator it2 = s.begin(); it2 != s.end(); ++it2) {
+    affirm(iterator1 == it2);
+    affirm(!(iterator1 != it2));
+    ++iterator1;
+    affirm(!(iterator1 == it2));
+    affirm(iterator1 != it2);
+  }
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// incrementDecrementTest() for Iterators
+bool incrementDecrementTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("preIncrement and preDecrement test");
+
+  TestingString s;
+
+  s.push_back('a');
+  TestingString::iterator iterator1 = s.begin();
+  ++iterator1;
+  affirm(iterator1 == s.end());
+  --iterator1;
+  affirm(*iterator1 == 'a');
+  affirm(iterator1 == s.begin());
+
+  TestingString s2;
+  s2.push_back('a');
+  s2.push_back('b');
+  TestingString::iterator iterator2 = s2.begin();
+  ++iterator2;
+  ++iterator2;
+  --iterator2;
+  affirm(*iterator2 == 'b');
+  --iterator2;
+  affirm(*iterator2 == 'a');
+
+  TestingString::iterator iterator3 = s.end();
+  --iterator3;
+  affirm(iterator3 == s.begin());
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// dereferenceTest() for Iterators
+
+bool dereferenceTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("Iterator Dereference test");
+  char letters[] = {'t', 'h', 'e', 'q', 'u', 'i', 'c', 'k', 'b', 'r', 'o'
+  , 'w', 'n', 'f', 'o', 'x', 'j', 'u', 'm', 'p', 'e', 'd', 't', 'h'
+  , 'e', 'l', 'a', 'z', 'y', 'd', 'o', 'g', '4', '2'};
+  TestingString s;
+  for (char x : letters) {
+    s.push_back(x);
+  }
+  size_t i = 0;
+  for (TestingString::iterator it = s.begin(); it != s.end(); ++it) {
+    affirm(letters[i] == *it);
+    // Affirming twice so that we make sure * is const
+    affirm(letters[i] == *it);
+    ++i;
+  }
+  TestingString::iterator iterator2 = s.begin();
+  affirm(*iterator2 == 't');
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// beginTest() for Iterators
+bool beginTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("Begin test");
+
+  TestingString s;
+  TestingString r;
+
+  s.push_back('a');
+
+  TestingString::iterator s_it1 = s.begin();
+  TestingString::iterator s_it2 = s.begin();
+  TestingString::iterator s_it3 = s.end();
+
+  TestingString::iterator r_it1 = r.begin();
+  TestingString::iterator r_it2 = r.begin();
+  TestingString::iterator r_it3 = r.end();
+
+  affirm(r_it1 == r_it2);
+  // affirm(r_it1 == r_it3);
+  affirm(s_it1 == s_it2);
+  affirm(s_it1 != s_it3);
+
+  s.push_back('b');
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// endTest() for Iterators
+bool endTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("End test");
+
+  TestingString s;
+
+  TestingString::iterator it1 = s.begin();
+  TestingString::iterator it2 = s.end();
+
+  affirm(it1 == it2);
+
+  // If problems occur in testing, begin might be invalidated?
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+
+/////////////////////////////////////////
+//// ChunkyString Member function Tests
+////////////////////////////////////////
+
+// pushBackTest() for ChunkyString
+bool pushBackTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("push_back test");
+
+  TestingString s;
+  TestingString r;
+
+  s.push_back('a');
+  affirm(s.size() == 1);
+  affirm(s != r);
+
+  r.push_back('a');
+  affirm(s == r);
+  affirm(r.size() == 1);
+
+  s.push_back('a');
+  r.push_back('b');
+  affirm(r.size() == 2);
+  affirm(s.size() == 2);
+  affirm(r != s);
+
+  for (size_t i = 0; i < 50; ++i) {
+    s.push_back('a');
+  }
+  affirm(s.size() == 52);
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// constructorTest() for ChunkyString
+bool constructorTest2() {
+  // Set up the TestingLogger object
+  TestingLogger log("constructor test");
+
+  TestingString s;
+  affirm(s.size() == 0);
+
+  TestingString r;
+  affirm(r == s);
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// sizeTest() for ChunkyString
+bool sizeTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("Size test");
+
+  TestingString s;
+
+  size_t count = 0;
+  affirm(s.size() == count);
+
+  for (size_t i = 0; i < 100; ++i) {
+    s.push_back('j');
+    ++count;
+    affirm(s.size() == count);
+  }
+
+  for (TestingString::iterator it2 = s.begin();
+                it2 != s.end(); it2 = s.erase(it2)) {
+    affirm(s.size() == count);
+    --count;
+  }
+
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// operatorEqTest() for ChunkyString
+bool operatorEqTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("Operator= and operator!= test");
+
+  TestingString s;
+  TestingString r;
+
+  // check that two default strings are the same
+  // we include all of these to ensure symmetry
+  affirm(r == s);
+  affirm(!(r != s));
+  affirm(s == r);
+  affirm(!(s != r));
+
+  s.push_back('a');
+  s.push_back('l');
+  s.push_back('p');
+  s.push_back('h');
+  s.push_back('a');
+
+  r.push_back('b');
+  r.push_back('e');
+  r.push_back('t');
+  r.push_back('a');
+
+  // Affirm two strings of different size are different
+  affirm(r != s);
+  affirm(!(r == s));
+  affirm(s != r);
+  affirm(!(s == r));
+
+
+  r.push_back('a');
+  r.push_back('l');
+  r.push_back('p');
+  r.push_back('h');
+  r.push_back('a');
+
+  s.push_back('b');
+  s.push_back('e');
+  s.push_back('t');
+  s.push_back('a');
+
+  // Affirm two strings of the same size but rearranged
+  //  letters are diferent
+  affirm(r != s);
+  affirm(!(r == s));
+  affirm(s != r);
+  affirm(!(s == r));
+
+  TestingString t;
+  t.push_back('a');
+  t.push_back('l');
+  t.push_back('p');
+  t.push_back('h');
+  t.push_back('a');
+
+  t.push_back('b');
+  t.push_back('e');
+  t.push_back('t');
+  t.push_back('a');
+
+  // Affirm equality holds for equal strings
+  affirm(t == s);
+  affirm(!(t != s));
+  affirm(s == t);
+  affirm(!(s != t));
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// operatorLessTest() for ChunkyString
+bool operatorLessTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("operator< test");
+
+  TestingString s;
+  TestingString r;
+
+  s.push_back('a');
+
+  affirm(r < s);
+  affirm(!(s < r));
+
+  r.push_back('a');
+
+  affirm(!(r < s));
+  affirm(!(s < r));
+
+  s.push_back('a');
+  r.push_back('b');
+
+  affirm(s < r);
+
+  TestingString q;
+
+  q.push_back('a');
+  affirm(q < s);
+  affirm(q < r);
+
+  TestingString t;
+
+  t.push_back('b');
+  affirm(r < t);
+  affirm(s < t);
+  affirm(q < t);
+
+  t.push_back('a');
+  affirm(r < t);
+  affirm(s < t);
+  affirm(q < t);
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// appendTest() for operator+= in ChunkyString
+bool appendTest() {
+  // Set up the TestingLogger object
+  TestingLogger log("Operator+= test");
+
+  TestingString s;
+  TestingString r;
+
+  r.push_back('a');
+  r.push_back('l');
+  r.push_back('p');
+  r.push_back('h');
+  r.push_back('a');
+
+  s.push_back('b');
+  s.push_back('e');
+  s.push_back('t');
+  s.push_back('a');
+
+  TestingString s1;
+  TestingString r1;
+
+  r1.push_back('a');
+  r1.push_back('l');
+  r1.push_back('p');
+  r1.push_back('h');
+  r1.push_back('a');
+
+  s1.push_back('b');
+  s1.push_back('e');
+  s1.push_back('t');
+  s1.push_back('a');
+
+  TestingString t;
+  t.push_back('a');
+  t.push_back('l');
+  t.push_back('p');
+  t.push_back('h');
+  t.push_back('a');
+
+  t.push_back('b');
+  t.push_back('e');
+  t.push_back('t');
+  t.push_back('a');
+
+  TestingString t1;
+  t1.push_back('b');
+  t1.push_back('e');
+  t1.push_back('t');
+  t1.push_back('a');
+
+  t1.push_back('a');
+  t1.push_back('l');
+  t1.push_back('p');
+  t1.push_back('h');
+  t1.push_back('a');
+
+  size_t sizeR = r.size();
+  size_t sizeS = s.size();
+  r += s;
+  affirm(r == t);
+  affirm(s == s1);
+  affirm(r.size() == sizeR + sizeS);
+
+  s += r1;
+  affirm(s == t1);
+  affirm(r.size() == (sizeR + sizeS));
+
+  TestingString r2;
+
+  r2.push_back('a');
+  r2.push_back('l');
+  r2.push_back('p');
+  r2.push_back('h');
+  r2.push_back('a');
+
+  TestingString empty;
+  r1 += empty;
+  affirm(r2 == r1);
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+// insertTest() for ChunkyString
+bool insertTest2() {
+  // Set up the TestingLogger object
+  TestingLogger log("insert test");
+
+  TestingString s;
+  TestingString r;
+
+  s.push_back('a');
+  s.push_back('b');
+
+  r.push_back('a');
+  r.push_back('c');
+  r.push_back('b');
+
+  TestingString::iterator it1 = s.begin();
+  ++it1;
+
+  TestingString::iterator it2 = s.insert(it1, 'c');
+
+  affirm(*it2 == 'c');
+  affirm(s.size() == 3);
+  affirm(s == r);
+
+  // Print a summary of the all the affirmations and return true
+  // if they were all successful.
+  return log.summarize();
+}
+
+
 //--------------------------------------------------
 //           RUNNING THE TESTS
 //--------------------------------------------------
@@ -391,7 +851,7 @@ static void timeout_handler(int) {
 int main(int argc, char** argv) {
   // This line is for homework 7.
   // Comment it out for homework 8 and homework 9.
-  GenericString::loadImplementation(argv[1]);
+  // GenericString::loadImplementation(argv[1]);
 
   // Initalize testing environment
   TestingLogger alltests{"All tests"};
@@ -405,9 +865,23 @@ int main(int argc, char** argv) {
   affirm(iterDereferenceTest());
   affirm(pushBackSizeTest());
   affirm(equalityTest());
-  affirm(insertTest());
+  //affirm(insertTest());
   affirm(lessThan());
   affirm(plusEqualsTest());
+
+  // Kyra's Tests
+  affirm(equalityTest2());
+  affirm(incrementDecrementTest());
+  affirm(dereferenceTest());
+  affirm(beginTest());
+  affirm(endTest());
+  affirm(pushBackTest());
+  affirm(constructorTest2());
+  //affirm(sizeTest());
+  affirm(operatorEqTest());
+  affirm(operatorLessTest());
+  affirm(appendTest());
+  //affirm(insertTest2());
 
   if (alltests.summarize(true)) {
     return 0;  // Error code of 0 == Success!
