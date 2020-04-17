@@ -32,6 +32,7 @@ class ChunkyList {
     // Forward declaration of Iterator
     template <bool is_const>
     class Iterator;
+    //friend class Iterator;
 
  public:
     static const int CHUNKSIZE = 12;
@@ -80,14 +81,19 @@ class ChunkyList {
     const_iterator end() const;
 
     /**
-     * push_back: Inserts a character at the end of the ChunkyString.
-     * Note: constant time
-     * Warning invalidates all iterators
+     * \brief inserts a character at the end of the ChunkyString.
+     * \param c the element to be inserted
+     * \details invalidates all iterators
      */
     void push_back(ELEMENT c);
 
     // Standard string ops: size, concatenation, (in)equality, comparison, print
-    size_t size() const;  ///< String size \note constant time
+
+    /**
+     * \brief returns the size of the ChunkyList
+     * \returns size_
+     */
+    size_t size() const; 
     bool operator==(const ChunkyList<ELEMENT>& rhs) const;
     bool operator!=(const ChunkyList<ELEMENT>& rhs) const;
     std::ostream& print(std::ostream& out) const;      ///< String printing
@@ -170,6 +176,11 @@ class ChunkyList {
     class Chunk {
      public:
         Chunk() = default;
+        /**
+         * \brief Constructs a chunk with a starting length
+         * \param length the desired length
+         */
+        Chunk(size_t length);
         Chunk(const Chunk& other) = default;
         ~Chunk() = default;
         Chunk& operator=(const Chunk& other) = default;
@@ -207,6 +218,11 @@ class ChunkyList {
      public:
         // Default constructor
         // Iterator();
+
+        ////////////////////////////////////////////
+        /////Delete after implementing all functions
+        ////////////////////////////////////////////
+        Iterator() = default;
 
         // Convert a non-const iterator to a const-iterator, if necessary
         Iterator(const Iterator<false>& i);
@@ -284,14 +300,10 @@ class ChunkyList {
         chunk_iter_t iter_;
         std::size_t elementIndex_;
     };
-
+    
     // ChunkyString data members
     size_t size_;              // Length of the string
     std::list<Chunk> chunks_;  // Linked list of chunks
-
-    // TODO(students): 
-    // If you decide to define additional private data members or
-    // any additioanl private member functions or constructors you // need for your ChunkyList implementation, put them here.
 };
 
 /**
