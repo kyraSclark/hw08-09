@@ -55,16 +55,28 @@ class ChunkyList {
     ChunkyList(const ChunkyList& other) = default;
     ChunkyList& operator=(const ChunkyList& other) = default;
 
-    /// Return an iterator to the first character in the ChunkyString.
+    /**
+    * \brief Returns an iterator to the first character in the ChunkyString.
+    * \return a iterator to the first char in the ChunkyString
+    */
     iterator begin();
 
-    /// Return an iterator to "one past the end"
+   /**
+    * \brief Returns an iterator to one past the last chunk in the ChunkyString.
+    * \return a iterator to "one past the end"
+    */
     iterator end();
 
-    /// Return a const_iterator to the first character in the ChunkyString.
+    /**
+    * \brief Returns an iterator to the first character in the ChunkyString.
+    * \return a const_iterator to the first char in the ChunkyString
+    */
     const_iterator begin() const;
 
-    /// Return a const_iterator to "one past the end"
+    /**
+    * \brief Returns an iterator to one past the last chunk in the ChunkyString.
+    * \return a const_iterator to "one past the end"
+    */
     const_iterator end() const;
 
     /**
@@ -238,8 +250,25 @@ class ChunkyList {
          * \returns a reference to decremented iterator
          */
         Iterator& operator--();
+
+        /**
+         * \brief ChunkyList iterator dereference of the current char
+         * \returns a reference of the current character
+         */
         reference operator*() const;
+
+        /**
+         * \brief ChunkyList iterator equality check
+         * \param rhs the other Iterator we want to check
+         * \returns a boolean if the Iterators have the same elementIndex and chunk iterator
+         */
         bool operator==(const Iterator& rhs) const;
+
+        /**
+         * \brief ChunkyList iterator inequality check
+         * \param rhs the other Iterator we want to check
+         * \returns a boolean if the Iterators do not have the same elementIndex or chunk iterator
+         */
         bool operator!=(const Iterator& rhs) const;
 
      private:

@@ -42,38 +42,65 @@ ChunkyList<ELEMENT>::ChunkyList() : size_{0}{
 
 template <typename ELEMENT>
 typename ChunkyList<ELEMENT>::iterator ChunkyList<ELEMENT>::begin() {
-    // Note: Not implemented yet
-    return Iterator<false>();
+    ChunkyList<ELEMENT>::iterator iter = Iterator<false>(chunks_.begin(), 0);
+    if (size() == 0) {
+        return iter;
+    } else {
+        // Return the first chunk with stuff in it
+        while (iter.iter_ -> length_ == 0) {
+            ++iter;
+        }
+    }
+    return iter;
 }
 
 template <typename ELEMENT>
 typename ChunkyList<ELEMENT>::iterator ChunkyList<ELEMENT>::end() {
-    // Note: Not implemented yet
-    return Iterator<false>();
+    return Iterator<false>(chunks_.end(), 0);
 }
 
 template <typename ELEMENT>
 typename ChunkyList<ELEMENT>::const_iterator
                                 ChunkyList<ELEMENT>::begin() const {
-    // Note: Not implemented yet
-    return Iterator<true>();
+    ChunkyList<ELEMENT>::iterator iter = Iterator<true>(chunks_.begin(), 0);
+    if (size() == 0) {
+        return iter;
+    } else {
+        // Return the first chunk with stuff in it
+        while (iter.iter_ -> length_ == 0) {
+            ++iter;
+        }
+    }
+    return iter;
 }
 
 template <typename ELEMENT>
 typename ChunkyList<ELEMENT>::const_iterator ChunkyList<ELEMENT>::end() const {
-    // Note: Not implemented yet
-    return Iterator<true>();
+    return Iterator<true>(chunks_.end(), 0);
 }
 
 template <typename ELEMENT>
 void ChunkyList<ELEMENT>::push_back(ELEMENT c) {
-    // Note: Not implemented yet
+    ChunkyList<ELEMENT>::iterator iter = end();
+    --iter;
+
+    if ((size() / size(chunks_) >= CHUNKSIZE / 2) ||
+        (iter.iter_ -> length_ == CHUNKSIZE) ) {
+        // Parameterized chunk that takes the length
+        // add the char to the chunk
+        // add the chunk to chunks_
+        ChunkyList<ELEMENT>::Chunk newChunk;
+        chunks_.push_back(newChunk);
+    } else {
+        *(iter.iter_)[iter.elementIndex_ + 1];
+        ++(iter.iter_ -> length_);
+    }   
+    ++size_;
 }
 
 template <typename ELEMENT>
 size_t ChunkyList<ELEMENT>::size() const {
-    // Note: Not implemented yet
-    return 0;
+    return size_;
 }
 
 template <typename ELEMENT>
@@ -211,7 +238,8 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
 template <typename ELEMENT>
 template<bool is_const>
 ChunkyList<ELEMENT>::Iterator<is_const>::Iterator(const Iterator<false>& i) {
-    is_const = true;
+    iter_ = i.iter_;
+    elementIndex_ = i.elementIndex_;
 }
 
 template <typename ELEMENT>
@@ -261,31 +289,24 @@ template <typename ELEMENT>
 template<bool is_const>
 typename ChunkyList<ELEMENT>::template Iterator<is_const>::reference
     ChunkyList<ELEMENT>::Iterator<is_const>::operator*() const {
-    // Note: Not implemented yet
 
-    // Note: This is a *terrible* implementation that will return
-    // a reference to something on the stack. It should be changed!
-    // This is only here to make sure the starter code will compile
-    // against your tests; you should fix it before you expect any
-    // tests to pass!
-    value_type v;
-    return v;
+    ChunkyList<ELEMENT>::Chunk currentChunk = *iter_;
+    Iterator<is_const>::reference currentEl = currentChunk.elements_[elementIndex_];
+    return currentEl;
 }
 
 template <typename ELEMENT>
 template<bool is_const>
 bool ChunkyList<ELEMENT>::Iterator<is_const>::operator==(
                                              const Iterator& rhs) const {
-  // Note: Not implemented yet
-  return true;
+  return (iter_ == rhs.iter_ && elementIndex_ == rhs.elementIndex_);
 }
 
 template <typename ELEMENT>
 template<bool is_const>
 bool ChunkyList<ELEMENT>::Iterator<is_const>::operator!=(
                                               const Iterator& rhs) const {
-    // Note: Not implemented yet
-    return false;
+    return !(*this == rhs);
 }
 
 // TODO(students): Add any other constructors or member functions
