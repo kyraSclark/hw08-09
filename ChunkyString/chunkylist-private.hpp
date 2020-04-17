@@ -14,15 +14,15 @@
 /*********************************************************************
  * Chunk implementation
  *********************************************************************/
-template <typename ELEMENT>
-ChunkyList<ELEMENT>::Chunk::Chunk() {
-    // Note: Not implemented yet
-}
+// template <typename ELEMENT>
+// ChunkyList<ELEMENT>::Chunk::Chunk() {
+//     // Note: Not implemented yet
+// }
 
-template <typename ELEMENT>
-ChunkyList<ELEMENT>::Chunk::Chunk(const Chunk& other) {
-    // Note: Not implemented yet
-}
+// template <typename ELEMENT>
+// ChunkyList<ELEMENT>::Chunk::Chunk(const Chunk& other) {
+//     // Note: Not implemented yet
+// }
 
 
 // TODO(students): 
@@ -35,8 +35,9 @@ ChunkyList<ELEMENT>::Chunk::Chunk(const Chunk& other) {
  *********************************************************************/
 
 template <typename ELEMENT>
-ChunkyList<ELEMENT>::ChunkyList() {
-    // Note: Not implemented yet
+ChunkyList<ELEMENT>::ChunkyList() : size_{0}{
+    ChunkyList::Chunk first;
+    chunks_.push_back(first);
 }
 
 template <typename ELEMENT>
@@ -201,30 +202,37 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
  */
 
 
-template <typename ELEMENT>
-template <bool is_const>
-ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator() {
-    // Note: Not implemented yet
-}
+// template <typename ELEMENT>
+// template <bool is_const>
+// ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator() {
+    
+// }
 
 template <typename ELEMENT>
 template<bool is_const>
 ChunkyList<ELEMENT>::Iterator<is_const>::Iterator(const Iterator<false>& i) {
-    // Note: Not implemented yet
+    is_const = true;
 }
 
 template <typename ELEMENT>
 template<bool is_const>
 ChunkyList<ELEMENT>::Iterator<is_const>::Iterator(chunk_iter_t iter,
-                                           std::size_t elementIndex) {
-    // Note: Not implemented yet
+                                           std::size_t elementIndex) : iter_{iter}, elementIndex_{elementIndex} {
 }
 
 template <typename ELEMENT>
 template<bool is_const>
 typename ChunkyList<ELEMENT>::template Iterator<is_const>&
                   ChunkyList<ELEMENT>::Iterator<is_const>::operator++() {
-    // Note: Not implemented yet
+    ++elementIndex_;
+    while (iter_ != chunks_.end()) {
+        if (elementIndex_ == iter_ -> length_) {
+            elementIndex_ = 0;
+            ++iter_;
+        } else {
+            return *this;
+        }
+    }
     return *this;
 }
 
@@ -232,7 +240,19 @@ template <typename ELEMENT>
 template<bool is_const>
 typename ChunkyList<ELEMENT>::template Iterator<is_const>&
          ChunkyList<ELEMENT>::Iterator<is_const>::operator--() {
-    // Note: Not implemented yet
+    if (elementIndex_ == 0) {
+        --iter_;
+        while (iter_ -> length_ == 0 && iter_ != chunks_.begin()) {
+            --iter_;
+        }
+        if (iter_ == chunks_.begin()) {
+            elementIndex_ = 0;
+        } else {
+            elementIndex_ = iter_ -> length_ - 1;
+        }
+    } else {
+        --elementIndex_;
+    }
 
     return *this;
 }

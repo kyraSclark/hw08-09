@@ -51,10 +51,9 @@ class ChunkyList {
      * Note: constant time
      */
     ChunkyList();
-
-    // TODO(students): Are the synthesized copy constructor,
-    // assignment operator, and
-    //       destructor okay, or should we define our own?
+    ~ChunkyList() = default;
+    ChunkyList(const ChunkyList& other) = default;
+    ChunkyList& operator=(const ChunkyList& other) = default;
 
     /// Return an iterator to the first character in the ChunkyString.
     iterator begin();
@@ -158,15 +157,16 @@ class ChunkyList {
     // NOTE: You can choose to change Chunk to be a struct rather than a class
     class Chunk {
      public:
-        Chunk();
-        Chunk(const Chunk& other);
-        // TODO(students): As needed, change the Chunk encoding and interface.
-        // You are free to remove the constructors above if you don't
-        // need them; just be sure to remove them from chunkylist-private.hpp
-        // if you remove them here!
+        Chunk() = default;
+        Chunk(const Chunk& other) = default;
+        ~Chunk() = default;
+        Chunk& operator=(const Chunk& other) = default;
+
      private:
         size_t length_;
         ELEMENT elements_[CHUNKSIZE];
+        friend class ChunkyList<ELEMENT>;
+        friend class ChunkyList<ELEMENT>::iterator;
     };
 
     /**
@@ -194,13 +194,13 @@ class ChunkyList {
     class Iterator {
      public:
         // Default constructor
-        Iterator();
+        // Iterator();
 
         // Convert a non-const iterator to a const-iterator, if necessary
         Iterator(const Iterator<false>& i);
 
-        // TODO(students): Do we need more constuctors? A destructor?
-        //       An assignment operator?
+        ~Iterator() = default;
+        Iterator& operator=(const Iterator& other) = default;
 
         // Make Iterator STL-friendly with these typedefs:
         using difference_type   = ptrdiff_t;
@@ -227,7 +227,16 @@ class ChunkyList {
                               typename std::list<Chunk>::iterator>::type;
 
         // Operations
+        /**
+         * \brief ChunkyList iterator increment to the next char
+         * \returns a reference to the incremented iterator
+         */
         Iterator& operator++();
+        
+        /**
+         * \brief ChunkyList iterator decrement to previous char
+         * \returns a reference to decremented iterator
+         */
         Iterator& operator--();
         reference operator*() const;
         bool operator==(const Iterator& rhs) const;
@@ -236,10 +245,11 @@ class ChunkyList {
      private:
         friend class ChunkyList<ELEMENT>;
 
-        // TODO(students): If needed, add private data members and
-        // any private member functions or constructors you need for
-        // your Iterator implementation here.
-
+        /**
+         * \brief Iterator parameterized constructor
+         * \param iter a list iterator for chunks_
+         * \param elementIndex the current index in the chunk
+         */
         Iterator(chunk_iter_t iter, std::size_t elementIndex);
 
         chunk_iter_t iter_;
