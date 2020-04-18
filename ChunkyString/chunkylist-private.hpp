@@ -206,7 +206,8 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
 
 template <typename ELEMENT>
 template <bool is_const>
-ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator() : elementIndex_{0}{
+ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator()
+    : elementIndex_{0} {
 }
 
 template <typename ELEMENT>
