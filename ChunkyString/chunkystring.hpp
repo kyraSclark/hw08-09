@@ -12,13 +12,10 @@
 #include <cstddef>
 #include <string>
 
-bool my_compare(char c1, char c2) {
-  return std::char_traits<char>::lt(c1, c2);  
-}
+bool my_compare(char c1, char c2) { return std::char_traits<char>::lt(c1, c2); }
 
 #include "chunkylist.hpp"
 
 using ChunkyString = ChunkyList<char>;
-
 
 #endif  //  CHUNKYSTRING_HPP_INCLUDED
