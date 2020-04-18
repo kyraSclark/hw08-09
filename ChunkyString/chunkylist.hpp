@@ -32,8 +32,10 @@ class ChunkyList {
     // Forward declaration of Iterator
     template <bool is_const>
     class Iterator;
-    //friend class Iterator;
 
+    template <bool is_const>
+    friend class Iterator;
+    
  public:
     static const int CHUNKSIZE = 12;
 
@@ -189,7 +191,9 @@ class ChunkyList {
         size_t length_;
         ELEMENT elements_[CHUNKSIZE];
         friend class ChunkyList<ELEMENT>;
-        friend class ChunkyList<ELEMENT>::iterator;
+       
+        template <bool is_const>
+        friend class Iterator;
     };
 
     /**
