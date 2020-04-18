@@ -1,7 +1,7 @@
 /**
  * \file chunkylist.hpp
  *
- * \authors CS 70 given code, with additions by ... your aliases here ...
+ * \authors CS 70 given code, with additions by Kyra Clark and Avalon Vinella
  *
  * \brief Declares the ChunkyList class.
  */
@@ -214,10 +214,7 @@ class ChunkyList {
   template <bool is_const>
   class Iterator {
    public:
-    ////////////////////////////////////////////
-    ///// Delete after implementing all functions
-    ////////////////////////////////////////////
-    Iterator() = default;
+    Iterator();
 
     // Convert a non-const iterator to a const-iterator, if necessary
     Iterator(const Iterator<false>& i);

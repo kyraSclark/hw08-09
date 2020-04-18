@@ -195,8 +195,6 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
   std::cerr << "\n";
 }
 
-// TODO(students): Add any other constructors or member functions
-// for your ChunkyList class here.
 
 /*********************************************************************
  * ChunkyString::Iterator class.
@@ -206,11 +204,10 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
  *
  */
 
-// template <typename ELEMENT>
-// template <bool is_const>
-// ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator() {
-
-// }
+template <typename ELEMENT>
+template <bool is_const>
+ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator() : elementIndex_{0}{
+}
 
 template <typename ELEMENT>
 template <bool is_const>
