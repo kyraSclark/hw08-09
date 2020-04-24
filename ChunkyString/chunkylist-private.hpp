@@ -115,9 +115,18 @@ template <typename ELEMENT>
 ChunkyList<ELEMENT>& ChunkyList<ELEMENT>::operator+=(
     const ChunkyList<ELEMENT>& rhs) {
   if (rhs.size() != 0) {
-    for (ChunkyList<ELEMENT>::const_iterator iterRHS = rhs.begin();
-         iterRHS != rhs.end(); ++iterRHS) {
-      push_back(*iterRHS);
+    // If we append a ChunkyList to itself, we have to iterate through a copy
+    if (rhs == *this) {
+      ChunkyList<ELEMENT> right = rhs;
+      for (ChunkyList<ELEMENT>::const_iterator iterRHS = right.begin();
+            iterRHS != right.end(); ++iterRHS) {
+        push_back(*iterRHS);
+      }
+    } else {
+      for (ChunkyList<ELEMENT>::const_iterator iterRHS = rhs.begin();
+            iterRHS != rhs.end(); ++iterRHS) {
+        push_back(*iterRHS);
+      }
     }
   }
   return *this;
