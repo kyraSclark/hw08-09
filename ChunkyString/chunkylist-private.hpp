@@ -129,8 +129,7 @@ ChunkyList<ELEMENT>& ChunkyList<ELEMENT>::operator+=(
       }
     }
   }
-  ChunkyList<ELEMENT>& final = *this;
-  return final;
+  return *this;
 }
 
 template <typename ELEMENT>
