@@ -118,7 +118,6 @@ ChunkyList<ELEMENT>& ChunkyList<ELEMENT>::operator+=(
     for (ChunkyList<ELEMENT>::const_iterator iterRHS = rhs.begin();
          iterRHS != rhs.end(); ++iterRHS) {
       push_back(*iterRHS);
-      // dump("check in for loop");
     }
   }
   return *this;

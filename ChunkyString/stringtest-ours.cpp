@@ -368,12 +368,11 @@ bool plusEqualsTest() {
   TestingString expected;
   expected.push_back('a');
   expected.push_back('a');
-  // adding a string to itself is undefined bahavior?
-  // s += s;
-  // affirm(s == expected);
-  // s += t;
-  // expected.push_back('b');
-  // affirm(s == expected);
+  s += s;
+  affirm(s == expected);
+  s += t;
+  expected.push_back('b');
+  affirm(s == expected);
 
   return log.summarize();
 }
