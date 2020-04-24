@@ -25,6 +25,8 @@
  * reverse_iterator and const_reverse_iterator aren't
  * supported. Other than that, we use the STL container type declarations
  * such that STL functions are compatible with ChunkyString.
+ *
+ * The type used for ELEMENT must have a my_compare function
  */
 template <typename ELEMENT>
 class ChunkyList {
@@ -96,28 +98,37 @@ class ChunkyList {
    * \returns size_
    */
   size_t size() const;
+
+  /**
+   * \brief returns if two chunkyLists are equal
+   # \param rhs the other chunkyList to compare
+   * \returns true if every ELEMENT is the same, else false
+   */
   bool operator==(const ChunkyList<ELEMENT>& rhs) const;
+
+  /**
+   * \brief returns if two chunkyLists are unequal
+   # \param rhs the other chunkyList to compare
+   * \returns false if every ELEMENT is the same, else true
+   */
   bool operator!=(const ChunkyList<ELEMENT>& rhs) const;
+
   std::ostream& print(std::ostream& out) const;  ///< String printing
 
   /**
-   * String concatenation
-   * Warning: invalidates all iterators
+   * \brief appends another chunkylist to the end of this
+   # \param rhs the chunkyList whose ELEMENTS are being added
+   * \returns the newly appended chunkylist
+   * \details invalidates all iterators
    */
   ChunkyList<ELEMENT>& operator+=(const ChunkyList<ELEMENT>& rhs);
 
   /**
-   * List comparison is lexicographic, which means:
-   *    + Two lists `s1` and `s2` are compared element by element.
-   *    + The first elements that aren't equal determine the order. If the
-   *      element value from `s1` is smaller than the corresponding one from
-   *      `s2`, then `s1` < `s2`, and vice-versa.
-   *    + If `s1` is a prefix of `s2`, then `s1` < `s2`, and vice-versa.
-   *    + If `s1` and `s2` have exactly the same elements, then neither is
-   *      less than the other.
-   *    + An empty list is less than any other list, except the empty list.
-   * See: http://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
-   */
+  * \brief checks if lhs is alphabetically less than rhs
+  # \param rhs the chunkyList to be compared
+  * \returns true if lhs is less than rhs
+  *          (in other words, if lhs would come before rhs in a dictionary)
+  */
   bool operator<(const ChunkyList<ELEMENT>& rhs) const;
 
   /**

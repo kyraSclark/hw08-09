@@ -85,14 +85,24 @@ size_t ChunkyList<ELEMENT>::size() const {
 
 template <typename ELEMENT>
 bool ChunkyList<ELEMENT>::operator==(const ChunkyList<ELEMENT>& rhs) const {
-  // Note: Not implemented yet
+  if (rhs.size() != size()) {
+    return false;
+  } else {
+    ChunkyList<ELEMENT>::const_iterator iter2 = rhs.begin();
+    for (ChunkyList<ELEMENT>::const_iterator iter1 = begin(); iter1 != end();
+         ++iter1) {
+      if (*iter1 != *iter2) {
+        return false;
+      }
+      ++iter2;
+    }
+  }
   return true;
 }
 
 template <typename ELEMENT>
 bool ChunkyList<ELEMENT>::operator!=(const ChunkyList<ELEMENT>& rhs) const {
-  // Note: Not implemented yet
-  return false;
+  return !(*this == rhs);
 }
 
 template <typename ELEMENT>
@@ -104,14 +114,38 @@ std::ostream& ChunkyList<ELEMENT>::print(std::ostream& out) const {
 template <typename ELEMENT>
 ChunkyList<ELEMENT>& ChunkyList<ELEMENT>::operator+=(
     const ChunkyList<ELEMENT>& rhs) {
-  // Note: Not implemented yet
+  if (rhs.size() != 0) {
+    for (ChunkyList<ELEMENT>::const_iterator iterRHS = rhs.begin();
+         iterRHS != rhs.end(); ++iterRHS) {
+      push_back(*iterRHS);
+      // dump("check in for loop");
+    }
+  }
   return *this;
 }
 
 template <typename ELEMENT>
 bool ChunkyList<ELEMENT>::operator<(const ChunkyList<ELEMENT>& rhs) const {
-  // Note: Not implemented yet
-  return true;
+  ChunkyList<ELEMENT>::const_iterator iter = begin();
+  // Loop through the characters until there is a difference
+  for (ChunkyList<ELEMENT>::const_iterator iter2 = rhs.begin();
+       iter2 != rhs.end(); ++iter2) {
+    if (iter == end()) {
+      // If the strings are the same, but lhs is shorter
+      return true;
+    } else if (my_compare(*iter2, *iter)) {
+      // If the right has a character less than left
+      return false;
+    } else if (my_compare(*iter, *iter2)) {
+      // If the left has a character less than right
+      return true;
+    }
+    ++iter;
+  }
+
+  // Every character has been the same so far
+  // and the rhs is shorter or the same
+  return false;
 }
 
 template <typename ELEMENT>
@@ -195,7 +229,6 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
   std::cerr << "\n";
 }
 
-
 /*********************************************************************
  * ChunkyString::Iterator class.
  *********************************************************************
@@ -207,8 +240,7 @@ void ChunkyList<ELEMENT>::dump(const std::string& label) const {
 template <typename ELEMENT>
 template <bool is_const>
 ChunkyList<ELEMENT>::template Iterator<is_const>::Iterator()
-    : elementIndex_{0} {
-}
+    : elementIndex_{0} {}
 
 template <typename ELEMENT>
 template <bool is_const>
