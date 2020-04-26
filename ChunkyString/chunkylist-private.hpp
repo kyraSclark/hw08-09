@@ -107,8 +107,12 @@ bool ChunkyList<ELEMENT>::operator!=(const ChunkyList<ELEMENT>& rhs) const {
 
 template <typename ELEMENT>
 std::ostream& ChunkyList<ELEMENT>::print(std::ostream& out) const {
-  // Note: Not implemented yet
-  return out;
+ for (const Chunk& chunk : chunks_) {
+    for (size_t i = 0; i < chunk.length_; ++i) {
+      out << chunk.elements_[i];
+    }
+ }
+ return out;
 }
 
 template <typename ELEMENT>
