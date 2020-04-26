@@ -107,12 +107,12 @@ bool ChunkyList<ELEMENT>::operator!=(const ChunkyList<ELEMENT>& rhs) const {
 
 template <typename ELEMENT>
 std::ostream& ChunkyList<ELEMENT>::print(std::ostream& out) const {
- for (const Chunk& chunk : chunks_) {
+  for (const Chunk& chunk : chunks_) {
     for (size_t i = 0; i < chunk.length_; ++i) {
       out << chunk.elements_[i];
     }
- }
- return out;
+  }
+  return out;
 }
 
 template <typename ELEMENT>
@@ -123,12 +123,12 @@ ChunkyList<ELEMENT>& ChunkyList<ELEMENT>::operator+=(
     if (rhs == *this) {
       ChunkyList<ELEMENT> right = rhs;
       for (ChunkyList<ELEMENT>::const_iterator iterRHS = right.begin();
-            iterRHS != right.end(); ++iterRHS) {
+           iterRHS != right.end(); ++iterRHS) {
         push_back(*iterRHS);
       }
     } else {
       for (ChunkyList<ELEMENT>::const_iterator iterRHS = rhs.begin();
-            iterRHS != rhs.end(); ++iterRHS) {
+           iterRHS != rhs.end(); ++iterRHS) {
         push_back(*iterRHS);
       }
     }
